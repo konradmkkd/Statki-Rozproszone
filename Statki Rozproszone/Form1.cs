@@ -166,7 +166,7 @@ namespace Statki_Rozproszone
 
             if (kolej>=6 && kolej % 2==0 && czyWojna)   //ruch 1 gracza
             {
-                ShowBoard(player1board, player2board);
+             
                 foreach (var item in player2Positions)
                 {
                     if (item.Text == button.Text)
@@ -175,6 +175,8 @@ namespace Statki_Rozproszone
                         button.BackColor= Color.BlueViolet;
                         player1Score++;
                         player1board.Add(button);
+             
+                        ShowBoard(player2board, player1board);
                         break;
 
                     }
@@ -183,7 +185,8 @@ namespace Statki_Rozproszone
                         button.Tag = "miss";
                         button.BackColor = Color.Green;
                         player1board.Add(button);
-
+                 
+                        ShowBoard(player2board, player1board);
                     }
                 }
 
@@ -212,7 +215,7 @@ namespace Statki_Rozproszone
 
             if (totalShipis == -3 && kolej % 2 != 0 && czyWojna && kolej>6)
             {
-                ShowBoard(player2board, player1board);
+               
                 player2Hits.Add(button);
                
                 foreach (var item in player1Positions)
@@ -221,8 +224,11 @@ namespace Statki_Rozproszone
                     {
                         button.Tag = "hit";
                         button.BackColor = Color.BlueViolet;
+
                         player2Score++;
                         player2board.Add(button);
+                 
+                        ShowBoard(player1board, player2board);
                         break;
                     }
                     else
@@ -230,7 +236,8 @@ namespace Statki_Rozproszone
                         button.Tag = "miss";
                         button.BackColor = Color.Green;
                         player2board.Add(button);
-                        
+
+                        ShowBoard(player1board, player2board);
 
                     }
                 }
@@ -253,18 +260,18 @@ namespace Statki_Rozproszone
         }
          private void ShowBoard(List<Button> toShow, List<Button> toHide)
         {
-            ClearTheBoard(toHide);
             foreach(var item in toShow)
             {
                 if (item.Tag == "miss")
                 {
-                    item.BackColor = Color.Green;   
+                    item.BackColor = Color.Green;
                 }
                 if (item.Tag == "hit")
                 {
                     item.BackColor = Color.BlueViolet;
                 }
             }
+            ClearTheBoard(toHide);
         }
         private void ClearTheBoard(List<Button> lista)
         {
