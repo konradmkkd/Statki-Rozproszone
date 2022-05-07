@@ -67,6 +67,8 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.txtRounds = new System.Windows.Forms.TextBox();
             this.EnemyPlayTimer = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // player1Name
@@ -593,6 +595,26 @@
             // 
             this.EnemyPlayTimer.Interval = 1000;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(868, 261);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(93, 73);
+            this.button1.TabIndex = 36;
+            this.button1.Text = "Reset";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(859, 370);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(96, 122);
+            this.button2.TabIndex = 37;
+            this.button2.Text = "Zmiana gracza";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Statki
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -600,6 +622,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(982, 953);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.txtRounds);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -686,5 +710,7 @@
         private TextBox textBox2;
         private TextBox txtRounds;
         private System.Windows.Forms.Timer EnemyPlayTimer;
+        private Button button1;
+        private Button button2;
     }
 }

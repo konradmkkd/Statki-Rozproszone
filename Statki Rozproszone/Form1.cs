@@ -14,11 +14,15 @@ namespace Statki_Rozproszone
         }
         List<Button> playerPositionButtons;
         List<Button> enemyPositionButtons;
+
         List<Button> player1Positions = new List<Button>();
         List<Button> player2Positions = new List<Button>();
+
+
         List<Button> player1Hits = new List<Button>();
         List<Button> player2Hits = new List<Button>();
-
+        List<Button> player1board = new List<Button>();
+        List<Button> player2board = new List<Button>();
 
  
 
@@ -128,7 +132,7 @@ namespace Statki_Rozproszone
                 {
                     button.Enabled = false;
                     //button.Tag = "playerShip";
-                    button.BackColor = Color.Red;
+                    button.BackColor = Color.Yellow;
 
                     player2Positions.Add(button);
 
@@ -162,6 +166,7 @@ namespace Statki_Rozproszone
 
             if (kolej>=6 && kolej % 2==0 && czyWojna)   //ruch 1 gracza
             {
+                ShowBoard(player1board, player2board);
                 foreach (var item in player2Positions)
                 {
                     if (item.Text == button.Text)
@@ -169,6 +174,7 @@ namespace Statki_Rozproszone
                         button.Tag = "hit";
                         button.BackColor= Color.BlueViolet;
                         player1Score++;
+                        player1board.Add(button);
                         break;
 
                     }
@@ -176,30 +182,39 @@ namespace Statki_Rozproszone
                     {
                         button.Tag = "miss";
                         button.BackColor = Color.Green;
-
+                        player1board.Add(button);
 
                     }
                 }
-                player1Hits.Add(button);
-
-                //System.Threading.Thread.Sleep(1000);
 
 
                 //ustawianie kolejnej tury
                 txtHelp.Text = "2 Gracz strzela!";
+             
                 //button.BackColor = Color.White;
 
-                 
 
 
-                if (player1Score == 3) txtHelp.Text = "1 GRACZ ZWYCIÊ¯A";
+
+                if (player1Score == 3)
+                {
+                    txtHelp.Text = "1 GRACZ ZWYCIÊ¯A";
+                    const string message = "Gracz 1 zwyciê¿a";
+                    const string caption = "Zrestartuj grê";
+                    var result = MessageBox.Show(message, caption, MessageBoxButtons.RetryCancel);
+                    if (result == DialogResult.Retry)
+                    {
+                        RestartGame();
+                    }
+                }
 
             }
 
             if (totalShipis == -3 && kolej % 2 != 0 && czyWojna && kolej>6)
             {
-
+                ShowBoard(player2board, player1board);
                 player2Hits.Add(button);
+               
                 foreach (var item in player1Positions)
                 {
                     if (item.Text == button.Text)
@@ -207,12 +222,14 @@ namespace Statki_Rozproszone
                         button.Tag = "hit";
                         button.BackColor = Color.BlueViolet;
                         player2Score++;
+                        player2board.Add(button);
                         break;
                     }
                     else
                     {
                         button.Tag = "miss";
                         button.BackColor = Color.Green;
+                        player2board.Add(button);
                         
 
                     }
@@ -220,11 +237,44 @@ namespace Statki_Rozproszone
                 //System.Threading.Thread.Sleep(1000);
 
                 txtHelp.Text = "1 Gracz strzela!";
-                if (player2Score == 3) txtHelp.Text = "2 GRACZ ZWYCIÊ¯A";
+                if (player2Score == 3)
+                {
+                    txtHelp.Text = "2 GRACZ ZWYCIÊ¯A";
+                    const string message = "Gracz 2 zwyciê¿a";
+                    const string caption = "Zrestartuj grê";
+                    var result = MessageBox.Show(message, caption, MessageBoxButtons.RetryCancel);
+                    if (result == DialogResult.Retry)
+                    {
+                        RestartGame();
+                    }
+                }
             }
 
         }
-           
+         private void ShowBoard(List<Button> toShow, List<Button> toHide)
+        {
+            ClearTheBoard(toHide);
+            foreach(var item in toShow)
+            {
+                if (item.Tag == "miss")
+                {
+                    item.BackColor = Color.Green;   
+                }
+                if (item.Tag == "hit")
+                {
+                    item.BackColor = Color.BlueViolet;
+                }
+            }
+        }
+        private void ClearTheBoard(List<Button> lista)
+        {
+            foreach (var button in lista)
+            {
+                button.BackColor = Color.White;
+            }
+          
+        }
+    
            
         
         private void EnemyPlayTimerEvent(object sender, EventArgs e)
@@ -499,6 +549,16 @@ namespace Statki_Rozproszone
             {
                 MessageBox.Show("Choose a location from the drop down first", "Information");
             }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            RestartGame();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
