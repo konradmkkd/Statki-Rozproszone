@@ -68,7 +68,7 @@
             this.txtRounds = new System.Windows.Forms.TextBox();
             this.EnemyPlayTimer = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnChangePlayer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // player1Name
@@ -80,7 +80,6 @@
             this.player1Name.Size = new System.Drawing.Size(105, 20);
             this.player1Name.TabIndex = 0;
             this.player1Name.Text = "Player 1 Name";
-            this.player1Name.Click += new System.EventHandler(this.player1Name_Click);
             // 
             // player2Name
             // 
@@ -605,15 +604,19 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // button2
+            // btnChangePlayer
             // 
-            this.button2.Location = new System.Drawing.Point(859, 370);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(96, 122);
-            this.button2.TabIndex = 37;
-            this.button2.Text = "Zmiana gracza";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnChangePlayer.Enabled = false;
+            this.btnChangePlayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChangePlayer.ForeColor = System.Drawing.Color.White;
+            this.btnChangePlayer.BackColor = System.Drawing.Color.Black;
+            this.btnChangePlayer.Location = new System.Drawing.Point(859, 370);
+            this.btnChangePlayer.Name = "btnChangePlayer";
+            this.btnChangePlayer.Size = new System.Drawing.Size(96, 122);
+            this.btnChangePlayer.TabIndex = 37;
+            this.btnChangePlayer.Text = "Następny gracz";
+            this.btnChangePlayer.UseVisualStyleBackColor = true;
+            this.btnChangePlayer.Click += new System.EventHandler(this.button2_Click);
             // 
             // Statki
             // 
@@ -622,7 +625,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(982, 953);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnChangePlayer);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtRounds);
             this.Controls.Add(this.textBox2);
@@ -711,6 +714,6 @@
         private TextBox txtRounds;
         private System.Windows.Forms.Timer EnemyPlayTimer;
         private Button button1;
-        private Button button2;
+        private Button btnChangePlayer;
     }
 }

@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System;
+using System.Windows.Forms;
 
 
 namespace Statki_Rozproszone
@@ -10,6 +11,8 @@ namespace Statki_Rozproszone
         {
             InitializeComponent();
             RestartGame();
+
+            
 
         }
         List<Button> playerPositionButtons;
@@ -33,6 +36,9 @@ namespace Statki_Rozproszone
         int player2Score;
         int kolej;
         bool czyWojna;
+        int ticks;
+
+
 
 
         private void RestartGame()
@@ -44,13 +50,13 @@ namespace Statki_Rozproszone
 
             EnemyLocationListBox.Items.Clear();
             EnemyLocationListBox.Text = null;
-          
+            
 
             txtHelp.Text = "1 Gracz wybiera miejsca na statki";
             for (int i = 0; i < enemyPositionButtons.Count; i++)
             {
                 enemyPositionButtons[i].Enabled = true;
-                enemyPositionButtons[i].Tag = null;
+                enemyPositionButtons[i].Tag = " ";
                 enemyPositionButtons[i].BackColor = Color.White;
                 EnemyLocationListBox.Items.Add(enemyPositionButtons[i].Text);
 
@@ -60,7 +66,7 @@ namespace Statki_Rozproszone
             for (int i = 0; i < playerPositionButtons.Count; i++)
             {
                 playerPositionButtons[i].Enabled = true;
-                playerPositionButtons[i].Tag = null;
+                playerPositionButtons[i].Tag = " ";
 
             }
             player1Score = 0;
@@ -75,35 +81,20 @@ namespace Statki_Rozproszone
             czyWojna = false;
 
             btnAttack.Enabled = false;
-            enemyLocationPicker();
+            btnChangePlayer.Enabled = false;
 
         }
 
-        private void enemyLocationPicker()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                int index = rand.Next(enemyPositionButtons.Count);
-                if (enemyPositionButtons[index].Enabled == true && (string)enemyPositionButtons[index].Tag == null)
-                {
-                    enemyPositionButtons[index].Tag = "enemyShip";
-                    Debug.WriteLine("Enemy position: " + enemyPositionButtons[index].Text);
-                }
-                else
-                {
-                    index = rand.Next(enemyPositionButtons.Count);
-                }
-                
-            }
-        }
+      
         private void PlayerPositionButtonsEvent(object sender, EventArgs e)
         {
+
+
             var button = (Button)sender;
             kolej++;
             if (totalShipis > 0)    //moment wybierania 1 gracza
             {
                 button.Enabled = false;
-                //button.Tag = "playerShip";
                 button.BackColor = Color.Red;
 
                 player1Positions.Add(button);
@@ -166,39 +157,45 @@ namespace Statki_Rozproszone
 
             if (kolej>=6 && kolej % 2==0 && czyWojna)   //ruch 1 gracza
             {
-             
+                btnChangePlayer.Enabled = true;
                 foreach (var item in player2Positions)
                 {
                     if (item.Text == button.Text)
                     {
-                        button.Tag = "hit";
+                        string tempTag = button.Tag as string;
+                        tempTag = tempTag + 'x';
+                        button.Tag = tempTag;
                         button.BackColor= Color.BlueViolet;
                         player1Score++;
                         player1board.Add(button);
              
-                        ShowBoard(player2board, player1board);
+                        //ShowBoard(player2board, player1board);
                         break;
 
                     }
                     else
                     {
-                        button.Tag = "miss";
+                        string tempTag = button.Tag as string;
+                        tempTag = tempTag + 'o';
+                        button.Tag = tempTag;
                         button.BackColor = Color.Green;
                         player1board.Add(button);
                  
-                        ShowBoard(player2board, player1board);
+                        //ShowBoard(player2board, player1board);
                     }
                 }
 
 
                 //ustawianie kolejnej tury
                 txtHelp.Text = "2 Gracz strzela!";
-             
-                //button.BackColor = Color.White;
 
 
 
 
+                foreach (var buttons in playerPositionButtons)
+                {
+                    buttons.Enabled = false;
+                }
                 if (player1Score == 3)
                 {
                     txtHelp.Text = "1 GRACZ ZWYCIʯA";
@@ -210,6 +207,7 @@ namespace Statki_Rozproszone
                         RestartGame();
                     }
                 }
+                
 
             }
 
@@ -217,32 +215,42 @@ namespace Statki_Rozproszone
             {
                
                 player2Hits.Add(button);
-               
+                btnChangePlayer.Enabled = true;
+
                 foreach (var item in player1Positions)
                 {
                     if (item.Text == button.Text)
                     {
-                        button.Tag = "hit";
+                        string tempTag = button.Tag as string;
+                        tempTag = tempTag + 'X';
+                        button.Tag = tempTag;
+
                         button.BackColor = Color.BlueViolet;
 
                         player2Score++;
                         player2board.Add(button);
                  
-                        ShowBoard(player1board, player2board);
+                        //ShowBoard(player1board, player2board);
                         break;
                     }
                     else
                     {
-                        button.Tag = "miss";
+                        string tempTag = button.Tag as string;
+                        tempTag = tempTag + 'O';
+                        button.Tag = tempTag;
+
                         button.BackColor = Color.Green;
                         player2board.Add(button);
 
-                        ShowBoard(player1board, player2board);
+                        //ShowBoard(player1board, player2board);
 
                     }
                 }
                 //System.Threading.Thread.Sleep(1000);
-
+                foreach (var buttons in playerPositionButtons)
+                {
+                    buttons.Enabled = false;
+                }
                 txtHelp.Text = "1 Gracz strzela!";
                 if (player2Score == 3)
                 {
@@ -255,35 +263,63 @@ namespace Statki_Rozproszone
                         RestartGame();
                     }
                 }
+                
             }
-
         }
          private void ShowBoard(List<Button> toShow, List<Button> toHide)
         {
-            foreach(var item in toShow)
+            ClearTheBoard(toHide);
+
+            if (kolej % 2 == 1)
             {
-                if (item.Tag == "miss")
+                foreach (var item in toShow)
                 {
-                    item.BackColor = Color.Green;
-                }
-                if (item.Tag == "hit")
-                {
-                    item.BackColor = Color.BlueViolet;
+                    if (item.Tag.ToString().Contains('o'))
+                    {
+                        item.BackColor = Color.Green;
+                        item.Enabled = false;
+                    }
+                    if (item.Tag.ToString().Contains('x'))
+                    {
+                        item.BackColor = Color.BlueViolet;
+                        item.Enabled = false;
+                    }
                 }
             }
-            ClearTheBoard(toHide);
+            else
+            {
+                foreach (var item in toShow)
+                {
+                    if (item.Tag.ToString().Contains('O'))
+                    {
+                        item.BackColor = Color.Green;
+                        item.Enabled = false;
+                    }
+                    if (item.Tag.ToString().Contains('X'))
+                    {
+                        item.BackColor = Color.BlueViolet;
+                        item.Enabled = false;
+                    }
+                }
+            }
+            
         }
         private void ClearTheBoard(List<Button> lista)
         {
             foreach (var button in lista)
             {
                 button.BackColor = Color.White;
+                button.Enabled = true;
             }
-          
+            foreach (var item in playerPositionButtons)
+            {
+                item.Enabled = true;
+            }
         }
-    
-           
         
+
+
+
         private void EnemyPlayTimerEvent(object sender, EventArgs e)
         {
 
@@ -331,10 +367,7 @@ namespace Statki_Rozproszone
             }
 
         }
-        private void player1Name_Click(object sender, EventArgs e)
-        {
-
-        }
+        
         
 
         private void label1_Click(object sender, EventArgs e)
@@ -510,18 +543,7 @@ namespace Statki_Rozproszone
 
         private void btnAttack_Click(object sender, EventArgs e)
         {
-            //foreach (var item in playerPositionButtons)
-            //{
-            //    foreach (var zaznaczone in player1Positions)
-            //    {
-            //        if (item.Tag == zaznaczone.Tag)
-            //        {
-            //            Console.WriteLine("zaznaczony: "+ zaznaczone);
-            //            item.BackColor = Color.Black;
-            //        }
-
-            //    }
-            //}
+            
 
             AttackButtonEvent(sender, e);
 
@@ -565,7 +587,18 @@ namespace Statki_Rozproszone
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (kolej % 2 != 0)
+            {
+                ShowBoard(player1board, player2board);
+            }
+            if (kolej % 2 == 0)
+            {
+                ShowBoard(player2board, player1board);
 
+            }
+            btnChangePlayer.Enabled = false;
         }
+
+       
     }
 }
