@@ -27,16 +27,14 @@ namespace Statki_Rozproszone
         List<Button> player1board = new List<Button>();
         List<Button> player2board = new List<Button>();
 
- 
+     
 
-        Random rand = new Random();
+
         int totalShipis = 3;
-        int round = 10;
         int player1Score;
         int player2Score;
         int kolej;
         bool czyWojna;
-        int ticks;
 
 
 
@@ -44,13 +42,10 @@ namespace Statki_Rozproszone
         private void RestartGame()
         {
 
-
+         
             playerPositionButtons = new List<Button> { A1, A2, A3, A4, A5, B1, B2, B3, B4, B5, C1, C2, C3, C4, C5, D1, D2, D3, D4, D5, E1, E2, E3, E4, E5 };
             enemyPositionButtons = playerPositionButtons;
 
-            EnemyLocationListBox.Items.Clear();
-            EnemyLocationListBox.Text = null;
-            
 
             txtHelp.Text = "1 Gracz wybiera miejsca na statki";
             for (int i = 0; i < enemyPositionButtons.Count; i++)
@@ -58,9 +53,6 @@ namespace Statki_Rozproszone
                 enemyPositionButtons[i].Enabled = true;
                 enemyPositionButtons[i].Tag = " ";
                 enemyPositionButtons[i].BackColor = Color.White;
-                EnemyLocationListBox.Items.Add(enemyPositionButtons[i].Text);
-
-
 
             }
             for (int i = 0; i < playerPositionButtons.Count; i++)
@@ -71,41 +63,77 @@ namespace Statki_Rozproszone
             }
             player1Score = 0;
             player2Score = 0;
-            round = 10;
             totalShipis = 3;
             kolej = -1;
 
             txtPlayer.Text = player1Score.ToString();
             txtEnemy.Text = player2Score.ToString();
-            enemyMove.Text = "A1";
+     
             czyWojna = false;
 
-            btnAttack.Enabled = false;
+     
             btnChangePlayer.Enabled = false;
 
         }
+        private List<Button> Neighborhood(Button btn)
+        {
+            List<Button> lista = new List<Button>();
+            string name = btn.Name as string;
 
+            char letter = name[0];
+            char number = name[1];
+
+            string[] neighbours = {(letter).ToString() + ((char)(number + 1)).ToString(),
+                (letter).ToString() + ((char)(number - 1)).ToString(),
+                ((char)(letter + 1)).ToString() + (number).ToString(),
+                ((char)(letter - 1)).ToString() + (number).ToString()
+            };
+            foreach (Button obj in playerPositionButtons)
+            {
+                if (neighbours.Contains(obj.Name))
+                    lista.Add(obj);     
+            }
+            return lista;
+        }
       
         private void PlayerPositionButtonsEvent(object sender, EventArgs e)
         {
-
+       
 
             var button = (Button)sender;
             kolej++;
             if (totalShipis > 0)    //moment wybierania 1 gracza
             {
-                button.Enabled = false;
-                button.BackColor = Color.Red;
+                string tempName = "";
+                if (totalShipis == 3)
+                {
+                    button.Enabled = false;
+                    button.BackColor = Color.Red;
 
-                player1Positions.Add(button);
+                    player1Positions.Add(button);
+                    totalShipis -= 1;
+                    tempName = button.Name as string;
+                }
+                    
+                if (totalShipis ==2)
+                {
+                    List<Button> lista = Neighborhood(C2);
+                   foreach (Button btn in lista)
+                    {
+                        if(button == btn)
+                        {
+                            button.Enabled = false;
+                            button.BackColor = Color.Red;
 
-                totalShipis -= 1;
+                            player1Positions.Add(button);
+                            totalShipis -= 1;
+                        }
+                    }
+
+                }
+
                 if (totalShipis == 0)
                 {
-                    btnAttack.Enabled = true;
-                    btnAttack.BackColor = Color.Green;
-                    btnAttack.ForeColor = Color.Blue;
-
                     txtHelp.Text = "2 Gracz wybiera miejsca na statki";
                     string statkiPlayer1 = "";
                     foreach (var item in player1Positions)
@@ -130,9 +158,7 @@ namespace Statki_Rozproszone
                     totalShipis -= 1;
                     if (totalShipis == -3)
                     {
-                        btnAttack.Enabled = true;
-                        btnAttack.BackColor = Color.Green;
-                        btnAttack.ForeColor = Color.Blue;
+            
 
                         string statkiPlayer1 = "";
                         foreach (var item in player2Positions)
@@ -153,7 +179,7 @@ namespace Statki_Rozproszone
             }
 
             //tutaj po wybraniu statku, mo¿na robiæ kolejne klikniêcia, które s¹ rollowane za pomoc¹ zmiennej `kolej`
-            if (czyWojna) txtRounds.Text = kolej.ToString();
+       
 
             if (kolej>=6 && kolej % 2==0 && czyWojna)   //ruch 1 gracza
             {
@@ -317,58 +343,7 @@ namespace Statki_Rozproszone
             }
         }
         
-
-
-
-        private void EnemyPlayTimerEvent(object sender, EventArgs e)
-        {
-
-            if (playerPositionButtons.Count > 0 && round > 0)
-            {
-                round -= 1;
-                txtRounds.Text = "Round: " + round;
-                int index = rand.Next(playerPositionButtons.Count);
-                if ((string)playerPositionButtons[index].Tag == "playerShip")
-                {
-                    playerPositionButtons[index].BackColor = Color.Yellow;
-                    enemyMove.Text = playerPositionButtons[index].Text;
-                    playerPositionButtons[index].Enabled = false;
-                    playerPositionButtons.RemoveAt(index);
-                    player2Score += 1;
-                    txtEnemy.Text = player2Score.ToString();
-                    EnemyPlayTimer.Stop();
-                }
-                else
-                {
-                    playerPositionButtons[index].BackColor = Color.Pink;
-                    enemyMove.Text = playerPositionButtons[index].Text;
-                    playerPositionButtons[index].Enabled = false;
-                    playerPositionButtons.RemoveAt(index);
-                    EnemyPlayTimer.Stop();
-                }
-            }
-            if (round < 1 || player2Score > 2 || player1Score > 2)
-            {
-                if (player1Score > player2Score)
-                {
-                    MessageBox.Show("You win", "Winning");
-                    RestartGame();
-                }
-                else if (player2Score > player1Score)
-                {
-                    MessageBox.Show("Zatopiony", "Lost");
-                    RestartGame();
-                }
-                else if (player2Score == player1Score)
-                {
-                    MessageBox.Show("No one wins this game", "Draw");
-                    RestartGame();
-                }
-            }
-
-        }
-        
-        
+       
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -541,45 +516,7 @@ namespace Statki_Rozproszone
 
         }
 
-        private void btnAttack_Click(object sender, EventArgs e)
-        {
-            
-
-            AttackButtonEvent(sender, e);
-
-        }
-        private void AttackButtonEvent(object sender, EventArgs e)
-        {
-            if (EnemyLocationListBox.Text != "")
-            {
-                var attackPosition = EnemyLocationListBox.Text.ToLower();
-                int index = enemyPositionButtons.FindIndex(a => a.Name == attackPosition);
-                if (enemyPositionButtons[index].Enabled && round > 0)
-                {
-                    round -= 1;
-                    txtRounds.Text = "Round: " + round;
-                    if ((string)enemyPositionButtons[index].Tag == "enemyShip")
-                    {
-                        enemyPositionButtons[index].Enabled = false;
-                        enemyPositionButtons[index].BackColor = Color.Yellow;
-                        player1Score += 1;
-                        txtPlayer.Text = player1Score.ToString();
-                        EnemyPlayTimer.Start();
-                    }
-                    else
-                    {
-                        enemyPositionButtons[index].Enabled = false;
-                        enemyPositionButtons[index].BackColor = Color.DarkBlue;
-                        EnemyPlayTimer.Start();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Choose a location from the drop down first", "Information");
-            }
-        }
-
+    
         private void button1_Click_1(object sender, EventArgs e)
         {
             RestartGame();
@@ -599,6 +536,9 @@ namespace Statki_Rozproszone
             btnChangePlayer.Enabled = false;
         }
 
-       
+        private void txtPlayer_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

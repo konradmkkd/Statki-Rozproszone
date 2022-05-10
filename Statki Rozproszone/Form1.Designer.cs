@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Statki));
-            this.player1Name = new System.Windows.Forms.Label();
-            this.player2Name = new System.Windows.Forms.Label();
             this.A1 = new System.Windows.Forms.Button();
             this.B1 = new System.Windows.Forms.Button();
             this.C1 = new System.Windows.Forms.Button();
@@ -60,37 +58,12 @@
             this.txtHelp = new System.Windows.Forms.TextBox();
             this.txtPlayer = new System.Windows.Forms.TextBox();
             this.txtEnemy = new System.Windows.Forms.TextBox();
-            this.enemyMove = new System.Windows.Forms.TextBox();
-            this.btnAttack = new System.Windows.Forms.Button();
-            this.EnemyLocationListBox = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.txtRounds = new System.Windows.Forms.TextBox();
             this.EnemyPlayTimer = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.btnChangePlayer = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // player1Name
-            // 
-            this.player1Name.AutoSize = true;
-            this.player1Name.ForeColor = System.Drawing.Color.Black;
-            this.player1Name.Location = new System.Drawing.Point(22, 9);
-            this.player1Name.Name = "player1Name";
-            this.player1Name.Size = new System.Drawing.Size(105, 20);
-            this.player1Name.TabIndex = 0;
-            this.player1Name.Text = "Player 1 Name";
-            // 
-            // player2Name
-            // 
-            this.player2Name.AutoSize = true;
-            this.player2Name.ForeColor = System.Drawing.Color.Black;
-            this.player2Name.Location = new System.Drawing.Point(9, 44);
-            this.player2Name.Name = "player2Name";
-            this.player2Name.Size = new System.Drawing.Size(105, 20);
-            this.player2Name.TabIndex = 1;
-            this.player2Name.Text = "Player 2 Name";
-            this.player2Name.Click += new System.EventHandler(this.label1_Click);
             // 
             // A1
             // 
@@ -517,6 +490,7 @@
             this.txtPlayer.Size = new System.Drawing.Size(125, 20);
             this.txtPlayer.TabIndex = 28;
             this.txtPlayer.Text = "TextPlayer box";
+            this.txtPlayer.TextChanged += new System.EventHandler(this.txtPlayer_TextChanged);
             // 
             // txtEnemy
             // 
@@ -527,42 +501,6 @@
             this.txtEnemy.TabIndex = 29;
             this.txtEnemy.Text = "txtEnemy";
             this.txtEnemy.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // enemyMove
-            // 
-            this.enemyMove.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.enemyMove.Location = new System.Drawing.Point(845, 97);
-            this.enemyMove.Name = "enemyMove";
-            this.enemyMove.Size = new System.Drawing.Size(125, 20);
-            this.enemyMove.TabIndex = 30;
-            this.enemyMove.Text = "enemy move";
-            // 
-            // btnAttack
-            // 
-            this.btnAttack.BackColor = System.Drawing.Color.White;
-            this.btnAttack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnAttack.Cursor = System.Windows.Forms.Cursors.No;
-            this.btnAttack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnAttack.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAttack.ForeColor = System.Drawing.Color.Black;
-            this.btnAttack.Location = new System.Drawing.Point(133, 12);
-            this.btnAttack.Name = "btnAttack";
-            this.btnAttack.Size = new System.Drawing.Size(128, 52);
-            this.btnAttack.TabIndex = 31;
-            this.btnAttack.Text = "button1";
-            this.btnAttack.UseVisualStyleBackColor = false;
-            this.btnAttack.Click += new System.EventHandler(this.btnAttack_Click);
-            // 
-            // EnemyLocationListBox
-            // 
-            this.EnemyLocationListBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.EnemyLocationListBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EnemyLocationListBox.Font = new System.Drawing.Font("Segoe UI Semibold", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.EnemyLocationListBox.FormattingEnabled = true;
-            this.EnemyLocationListBox.Location = new System.Drawing.Point(23, 80);
-            this.EnemyLocationListBox.Name = "EnemyLocationListBox";
-            this.EnemyLocationListBox.Size = new System.Drawing.Size(151, 45);
-            this.EnemyLocationListBox.TabIndex = 32;
             // 
             // textBox1
             // 
@@ -582,21 +520,13 @@
             this.textBox2.TabIndex = 34;
             this.textBox2.Text = "Info2:";
             // 
-            // txtRounds
-            // 
-            this.txtRounds.Location = new System.Drawing.Point(869, 165);
-            this.txtRounds.Name = "txtRounds";
-            this.txtRounds.Size = new System.Drawing.Size(125, 27);
-            this.txtRounds.TabIndex = 35;
-            this.txtRounds.Text = "Runda";
-            // 
             // EnemyPlayTimer
             // 
             this.EnemyPlayTimer.Interval = 1000;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(868, 261);
+            this.button1.Location = new System.Drawing.Point(859, 262);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(93, 73);
             this.button1.TabIndex = 36;
@@ -606,10 +536,10 @@
             // 
             // btnChangePlayer
             // 
+            this.btnChangePlayer.BackColor = System.Drawing.Color.Black;
             this.btnChangePlayer.Enabled = false;
             this.btnChangePlayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnChangePlayer.ForeColor = System.Drawing.Color.White;
-            this.btnChangePlayer.BackColor = System.Drawing.Color.Black;
             this.btnChangePlayer.Location = new System.Drawing.Point(859, 370);
             this.btnChangePlayer.Name = "btnChangePlayer";
             this.btnChangePlayer.Size = new System.Drawing.Size(96, 122);
@@ -627,12 +557,8 @@
             this.ClientSize = new System.Drawing.Size(982, 953);
             this.Controls.Add(this.btnChangePlayer);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.txtRounds);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.EnemyLocationListBox);
-            this.Controls.Add(this.btnAttack);
-            this.Controls.Add(this.enemyMove);
             this.Controls.Add(this.txtEnemy);
             this.Controls.Add(this.txtPlayer);
             this.Controls.Add(this.txtHelp);
@@ -661,8 +587,6 @@
             this.Controls.Add(this.C1);
             this.Controls.Add(this.B1);
             this.Controls.Add(this.A1);
-            this.Controls.Add(this.player2Name);
-            this.Controls.Add(this.player1Name);
             this.ForeColor = System.Drawing.Color.Coral;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Statki";
@@ -675,9 +599,6 @@
         }
 
         #endregion
-
-        private Label player1Name;
-        private Label player2Name;
         private Button A1;
         private Button B1;
         private Button C1;
@@ -706,12 +627,8 @@
         private TextBox txtHelp;
         private TextBox txtPlayer;
         private TextBox txtEnemy;
-        private TextBox enemyMove;
-        private Button btnAttack;
-        private ComboBox EnemyLocationListBox;
         private TextBox textBox1;
         private TextBox textBox2;
-        private TextBox txtRounds;
         private System.Windows.Forms.Timer EnemyPlayTimer;
         private Button button1;
         private Button btnChangePlayer;
