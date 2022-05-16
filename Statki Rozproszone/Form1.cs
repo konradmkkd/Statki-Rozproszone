@@ -27,13 +27,17 @@ namespace Statki_Rozproszone
         List<Button> player1board = new List<Button>();
         List<Button> player2board = new List<Button>();
 
+        List<Button> neighboursList = new List<Button>();
+        List<Button> deactivatedButtons = new List<Button>();
+
      
 
 
-        int totalShipis = 3;
+        int totalShipis = 10;
         int player1Score;
         int player2Score;
         int kolej;
+        bool pierwszyWybiera;
         bool czyWojna;
 
 
@@ -63,15 +67,20 @@ namespace Statki_Rozproszone
             }
             player1Score = 0;
             player2Score = 0;
-            totalShipis = 3;
+            totalShipis = 10;
             kolej = -1;
 
             txtPlayer.Text = player1Score.ToString();
             txtEnemy.Text = player2Score.ToString();
      
             czyWojna = false;
+            pierwszyWybiera = true;
+            deactivatedButtons.Clear();
+            neighboursList.Clear();
+            player1Positions.Clear();
+            player2Positions.Clear();
 
-     
+
             btnChangePlayer.Enabled = false;
 
         }
@@ -102,64 +111,300 @@ namespace Statki_Rozproszone
 
             var button = (Button)sender;
             kolej++;
-            if (totalShipis > 0)    //moment wybierania 1 gracza
+             
+
+            if (totalShipis > 0 && pierwszyWybiera)    //moment wybierania 1 gracza
             {
+
+                //dodaj do kolejki statków gracza 1
                 string tempName = "";
-                if (totalShipis == 3)
+                if (totalShipis > 7)
+                {
+                    button.Enabled = false;
+                    button.BackColor = Color.Red;
+                    player1Positions.Add(button);
+                    totalShipis -= 1;
+                    tempName = button.Name as string;
+                    List<Button> tempNeighbours = Neighborhood(button);
+                    neighboursList.AddRange(tempNeighbours);
+
+                    if(totalShipis == 7)
+                    {
+                        foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+                        {
+
+                            if (!player1Positions.Contains(btn))
+                            {
+                                btn.Enabled = true;
+                                btn.BackColor = Color.White;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+                        {
+                            if (!player1Positions.Contains(neighbour))
+                            {
+                                deactivatedButtons.Add(neighbour);
+                                neighbour.Enabled = false;
+                                neighbour.BackColor = Color.LightGray;
+                            }
+
+                        }
+                        neighboursList.Clear();
+                    }
+                    else
+                    {
+                        foreach (var btn in playerPositionButtons)
+                        {
+
+                            if (!player1Positions.Contains(btn))
+                            {
+                                btn.Enabled = false;
+                                btn.BackColor = Color.LightGray;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList)
+                        {
+                            if (!player1Positions.Contains(neighbour))
+                            {
+                                neighbour.Enabled = true;
+                                neighbour.BackColor = Color.White;
+                            }
+
+                        }
+                    }
+                    
+                    //stwórz s¹siedztwo
+                    //wyœwietl tylko s¹siedztwo
+                }
+
+                if (totalShipis <= 7 && totalShipis >0 && kolej >=3)
+                {
+                    button.Enabled = false;
+                    button.BackColor = Color.Red;
+                    player1Positions.Add(button);
+                    tempName = button.Name as string;
+                    List<Button> tempNeighbours = Neighborhood(button);
+                    neighboursList.AddRange(tempNeighbours);
+                    
+                    if (totalShipis == 6 || totalShipis<=4)
+                    {
+                        foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+                        {
+
+                            if (!player1Positions.Contains(btn))
+                            {
+                                btn.Enabled = true;
+                                btn.BackColor = Color.White;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+                        {
+                            if (!player1Positions.Contains(neighbour))
+                            {
+                                deactivatedButtons.Add(neighbour);
+                                neighbour.Enabled = false;
+                                neighbour.BackColor = Color.LightGray;
+                            }
+
+                        }
+                        neighboursList.Clear();
+                        foreach (var deactivated in deactivatedButtons)
+                        {
+                            deactivated.Enabled = false;
+                            deactivated.BackColor = Color.LightGray;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var btn in playerPositionButtons)
+                        {
+
+                            if (!player1Positions.Contains(btn))    // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+                            {
+                                btn.Enabled = false;
+                                btn.BackColor = Color.LightGray;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList)
+                        {
+                            if (!player1Positions.Contains(neighbour) && !deactivatedButtons.Contains(neighbour)) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+                            {
+                                neighbour.Enabled = true;
+                                neighbour.BackColor = Color.White;
+                            }
+
+                        }
+                    }
+                    totalShipis -= 1;
+
+                    if (totalShipis == 0)
+                    {
+                        txtHelp.Text = "2 Gracz wybiera miejsca na statki";
+                        string statkiPlayer1 = "";
+                        foreach (var item in player1Positions)
+                        {
+                            statkiPlayer1 = statkiPlayer1 + item.Text;
+                            item.BackColor = Color.White;
+                            item.Enabled = true;
+                        }
+                        foreach (var item in deactivatedButtons) //lub neighbourButtons
+                        {
+                            statkiPlayer1 = statkiPlayer1 + item.Text;
+                            item.BackColor = Color.White;
+                            item.Enabled = true;
+                        }
+                        foreach (var item in neighboursList) //lub neighbourButtons
+                        {
+                            statkiPlayer1 = statkiPlayer1 + item.Text;
+                            item.BackColor = Color.White;
+                            item.Enabled = true;
+                        }
+                        txtPlayer.Text = statkiPlayer1;
+
+                       
+                        pierwszyWybiera = false;
+                        totalShipis = 10;
+                        deactivatedButtons.Clear();
+                        neighboursList.Clear();
+                    }
+
+                }  
+            }
+
+            if (totalShipis > 0 && !pierwszyWybiera && kolej>=10)    //moment wybierania 2 gracza
+            {
+
+                string tempName = "";
+                if (totalShipis > 7)
+                {
+                    button.Enabled = false;
+                    button.BackColor = Color.Red;
+                    totalShipis -= 1;
+                    player2Positions.Add(button);
+                    tempName = button.Name as string;
+                    List<Button> tempNeighbours = Neighborhood(button);
+                    neighboursList.AddRange(tempNeighbours);
+
+                    if (totalShipis == 7)
+                    {
+                        foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+                        {
+
+                            if (!player2Positions.Contains(btn))
+                            {
+                                btn.Enabled = true;
+                                btn.BackColor = Color.White;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+                        {
+                            if (!player2Positions.Contains(neighbour))
+                            {
+                                deactivatedButtons.Add(neighbour);
+                                neighbour.Enabled = false;
+                                neighbour.BackColor = Color.LightGray;
+                            }
+
+                        }
+                        neighboursList.Clear();
+                    }
+                    else
+                    {
+                        foreach (var btn in playerPositionButtons)
+                        {
+
+                            if (!player2Positions.Contains(btn))
+                            {
+                                btn.Enabled = false;
+                                btn.BackColor = Color.LightGray;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList)
+                        {
+                            if (!player2Positions.Contains(neighbour))
+                            {
+                                neighbour.Enabled = true;
+                                neighbour.BackColor = Color.White;
+                            }
+
+                        }
+                    }
+
+                    //stwórz s¹siedztwo
+                    //wyœwietl tylko s¹siedztwo
+                }
+
+                if (totalShipis <= 7 && totalShipis > 0 && kolej >= 13)
                 {
                     button.Enabled = false;
                     button.BackColor = Color.Red;
 
-                    player1Positions.Add(button);
-                    totalShipis -= 1;
+                    player2Positions.Add(button);
                     tempName = button.Name as string;
-                }
-                    
-                if (totalShipis ==2)
-                {
-                    List<Button> lista = Neighborhood(C2);
-                   foreach (Button btn in lista)
-                    {
-                        if(button == btn)
-                        {
-                            button.Enabled = false;
-                            button.BackColor = Color.Red;
+                    List<Button> tempNeighbours = Neighborhood(button);
+                    neighboursList.AddRange(tempNeighbours);
 
-                            player1Positions.Add(button);
-                            totalShipis -= 1;
+                    if (totalShipis == 6 || totalShipis <= 4)
+                    {
+                        foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+                        {
+
+                            if (!player2Positions.Contains(btn))
+                            {
+                                btn.Enabled = true;
+                                btn.BackColor = Color.White;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+                        {
+                            if (!player2Positions.Contains(neighbour))
+                            {
+                                deactivatedButtons.Add(neighbour);
+                                neighbour.Enabled = false;
+                                neighbour.BackColor = Color.LightGray;
+                            }
+
+                        }
+                        neighboursList.Clear();
+                        foreach (var deactivated in deactivatedButtons)
+                        {
+                            deactivated.Enabled = false;
+                            deactivated.BackColor = Color.LightGray;
                         }
                     }
-
-                }
-
-                if (totalShipis == 0)
-                {
-                    txtHelp.Text = "2 Gracz wybiera miejsca na statki";
-                    string statkiPlayer1 = "";
-                    foreach (var item in player1Positions)
+                    else
                     {
-                        statkiPlayer1 = statkiPlayer1 + item.Text;
-                        item.BackColor = Color.White;
-                        item.Enabled = true;
+                        foreach (var btn in playerPositionButtons)
+                        {
+
+                            if (!player2Positions.Contains(btn))    // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+                            {
+                                btn.Enabled = false;
+                                btn.BackColor = Color.LightGray;
+                            }
+                        }
+
+                        foreach (var neighbour in neighboursList)
+                        {
+                            if (!player2Positions.Contains(neighbour) && !deactivatedButtons.Contains(neighbour)) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+                            {
+                                neighbour.Enabled = true;
+                                neighbour.BackColor = Color.White;
+                            }
+
+                        }
                     }
-                    txtPlayer.Text = statkiPlayer1;
-                }
-            }
-            else
-            {
-                if (totalShipis > -3)   //moment wybierania drugiego gracza
-                {
-                    button.Enabled = false;
-                    //button.Tag = "playerShip";
-                    button.BackColor = Color.Yellow;
-
-                    player2Positions.Add(button);
-
                     totalShipis -= 1;
-                    if (totalShipis == -3)
-                    {
-            
 
+                    if (totalShipis == 0)
+                    {
                         string statkiPlayer1 = "";
                         foreach (var item in player2Positions)
                         {
@@ -167,21 +412,28 @@ namespace Statki_Rozproszone
                             item.BackColor = Color.White;
                             item.Enabled = true;
                         }
-                        txtEnemy.Text = statkiPlayer1;
+                        foreach (var item in deactivatedButtons)
+                        {
+                            item.Enabled = true;
+                            item.BackColor = Color.White;
+                        }
+                        txtPlayer.Text = statkiPlayer1;
                         txtHelp.Text = "1 Gracz strzela!";
+                        deactivatedButtons.Clear();
+                        neighboursList.Clear();
                         czyWojna = true;
+
                     }
-
-
-
 
                 }
             }
+            
+            
 
             //tutaj po wybraniu statku, mo¿na robiæ kolejne klikniêcia, które s¹ rollowane za pomoc¹ zmiennej `kolej`
        
 
-            if (kolej>=6 && kolej % 2==0 && czyWojna)   //ruch 1 gracza
+            if (kolej % 2==0 && czyWojna && kolej>=20)   //ruch 1 gracza
             {
                 btnChangePlayer.Enabled = true;
                 foreach (var item in player2Positions)
@@ -222,7 +474,7 @@ namespace Statki_Rozproszone
                 {
                     buttons.Enabled = false;
                 }
-                if (player1Score == 3)
+                if (player1Score == 10)
                 {
                     txtHelp.Text = "1 GRACZ ZWYCIÊ¯A";
                     const string message = "Gracz 1 zwyciê¿a";
@@ -237,7 +489,7 @@ namespace Statki_Rozproszone
 
             }
 
-            if (totalShipis == -3 && kolej % 2 != 0 && czyWojna && kolej>6)
+            if (kolej % 2 != 0 && czyWojna && kolej>20)
             {
                
                 player2Hits.Add(button);
@@ -278,7 +530,7 @@ namespace Statki_Rozproszone
                     buttons.Enabled = false;
                 }
                 txtHelp.Text = "1 Gracz strzela!";
-                if (player2Score == 3)
+                if (player2Score == 10)
                 {
                     txtHelp.Text = "2 GRACZ ZWYCIÊ¯A";
                     const string message = "Gracz 2 zwyciê¿a";
@@ -291,8 +543,10 @@ namespace Statki_Rozproszone
                 }
                 
             }
+            textBox3.Text = "K: " + kolej.ToString() + " T: " + totalShipis.ToString();
+
         }
-         private void ShowBoard(List<Button> toShow, List<Button> toHide)
+        private void ShowBoard(List<Button> toShow, List<Button> toHide)
         {
             ClearTheBoard(toHide);
 
@@ -537,6 +791,11 @@ namespace Statki_Rozproszone
         }
 
         private void txtPlayer_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
         }

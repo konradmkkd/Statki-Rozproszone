@@ -63,6 +63,7 @@
             this.EnemyPlayTimer = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.btnChangePlayer = new System.Windows.Forms.Button();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // A1
@@ -548,6 +549,14 @@
             this.btnChangePlayer.UseVisualStyleBackColor = true;
             this.btnChangePlayer.Click += new System.EventHandler(this.button2_Click);
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(789, 100);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(125, 27);
+            this.textBox3.TabIndex = 38;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            // 
             // Statki
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -555,6 +564,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(982, 953);
+            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.btnChangePlayer);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox2);
@@ -632,5 +642,6 @@
         private System.Windows.Forms.Timer EnemyPlayTimer;
         private Button button1;
         private Button btnChangePlayer;
+        private TextBox textBox3;
     }
 }
