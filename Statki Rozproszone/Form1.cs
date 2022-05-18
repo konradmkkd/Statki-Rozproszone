@@ -428,10 +428,7 @@ namespace Statki_Rozproszone
                 }
             }
             
-            
-
             //tutaj po wybraniu statku, mo¿na robiæ kolejne klikniêcia, które s¹ rollowane za pomoc¹ zmiennej `kolej`
-       
 
             if (kolej % 2==0 && czyWojna && kolej>=20)   //ruch 1 gracza
             {
@@ -466,7 +463,6 @@ namespace Statki_Rozproszone
 
                 //ustawianie kolejnej tury
                 txtHelp.Text = "2 Gracz strzela!";
-
 
 
 
@@ -546,9 +542,9 @@ namespace Statki_Rozproszone
             textBox3.Text = "K: " + kolej.ToString() + " T: " + totalShipis.ToString();
 
         }
-        private void ShowBoard(List<Button> toShow, List<Button> toHide)
+        private void ShowBoard(List<Button> toShow)
         {
-            ClearTheBoard(toHide);
+            ClearTheBoard();
 
             if (kolej % 2 == 1)
             {
@@ -584,16 +580,12 @@ namespace Statki_Rozproszone
             }
             
         }
-        private void ClearTheBoard(List<Button> lista)
+        private void ClearTheBoard()
         {
-            foreach (var button in lista)
+            foreach (var button in playerPositionButtons)
             {
                 button.BackColor = Color.White;
                 button.Enabled = true;
-            }
-            foreach (var item in playerPositionButtons)
-            {
-                item.Enabled = true;
             }
         }
         
@@ -780,12 +772,11 @@ namespace Statki_Rozproszone
         {
             if (kolej % 2 != 0)
             {
-                ShowBoard(player1board, player2board);
+                ShowBoard(player1board);
             }
             if (kolej % 2 == 0)
             {
-                ShowBoard(player2board, player1board);
-
+                ShowBoard(player2board);
             }
             btnChangePlayer.Enabled = false;
         }
