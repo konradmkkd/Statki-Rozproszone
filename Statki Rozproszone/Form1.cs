@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System;
 using System.Windows.Forms;
-
+using System.Net.Sockets;
 
 namespace Statki_Rozproszone
 {
@@ -41,7 +41,17 @@ namespace Statki_Rozproszone
         bool czyWojna;
 
 
-
+        private string buttonsToString(List<Button> lista)
+        {
+            string tempName = "";
+            string buttonsNames = "";
+            foreach (var button in lista)
+            {
+                tempName = button.Name as string;
+                buttonsNames += tempName;
+            }
+            return buttonsNames;
+        }
 
         private void RestartGame()
         {
@@ -789,6 +799,49 @@ namespace Statki_Rozproszone
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                TcpClient client = new TcpClient("127.0.0.1", 8080);
+                StreamReader reader = new StreamReader(client.GetStream());
+                StreamWriter writer = new StreamWriter(client.GetStream());
+                String s = String.Empty;
+                while (!s.Equals("Exit"))
+                {
+                    Console.Write("Enter a string to send to the server: ");
+                    //s = Console.ReadLine();
+                    //Console.WriteLine();
+
+                    if (player1Positions.Count > 0)
+                    {
+                        s = buttonsToString(player1Positions);
+                        
+                    }
+                    else if (player2Positions.Count>0)
+                    {
+                        s = buttonsToString(player2Positions);
+                    }
+                    else
+                    {
+                        s = "wiadomosc do serwera";
+                    }
+                    writer.WriteLine(s);
+                    writer.Flush();
+                    String server_string = reader.ReadLine();
+                    Console.WriteLine(server_string);
+                    Console.ReadKey();
+                }
+                reader.Close();
+                writer.Close();
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
