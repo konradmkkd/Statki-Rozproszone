@@ -6,18 +6,28 @@ using System.Threading;
 
 public class MultiThreadedEchoServer
 {
-
+    static int counter = 0;
+    static string[] shipsArray = new string[10];
+   //dodaje się poprawnie tylko gracz1 pierwszy jest na indeksie 2 a gracz2 na indeksie 3
+ 
     private static void ProcessClientRequests(object argument)
     {
+     
+
         TcpClient client = (TcpClient)argument;
         try
         {
+    
             StreamReader reader = new StreamReader(client.GetStream());
             StreamWriter writer = new StreamWriter(client.GetStream());
             string s = String.Empty;
+
             while (!(s = reader.ReadLine()).Equals("Exit") || (s == null))
             {
-                Console.WriteLine("From client -> " + s);
+               
+                shipsArray[counter] = s;
+
+                Console.WriteLine("Client ->" + s);
                 writer.WriteLine("From server -> " + s);
                 writer.Flush();
             }
@@ -25,6 +35,8 @@ public class MultiThreadedEchoServer
             writer.Close();
             client.Close();
             Console.WriteLine("Closing client connection!");
+
+        
         }
         catch (IOException)
         {
@@ -37,9 +49,10 @@ public class MultiThreadedEchoServer
                 client.Close();
             }
 
-        }
-    }
 
+        }
+      
+    }
     public static void Main()
 	{
 		TcpListener listener = null;
@@ -47,21 +60,35 @@ public class MultiThreadedEchoServer
 		{
 			listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 8080);
 			listener.Start();
-			Console.WriteLine("MultiThreadedEchoServer started...");
-			int counter = 0;
+
+		
 			while (true)
 			{
 				counter++;
-                Console.WriteLine("Waiting for incoming client connections...");
+                Console.WriteLine("Oczkiwanie na graczy..");
                 TcpClient client = listener.AcceptTcpClient();
                 Console.WriteLine("Gracz " + counter + " dołączył do gry");
-                Thread t = new Thread(ProcessClientRequests);
-                t.Start(client);
-
+                if (counter == 1)
+                {
+                    Thread t1 = new Thread(ProcessClientRequests);
+                    t1.Start(client);
+                    
+                }
 
                 if (counter == 2)
-					Console.WriteLine("Można rozpocząć grę");
-
+                {
+                    Thread t2 = new Thread(ProcessClientRequests);
+                    t2.Start(client);
+                    Console.WriteLine("Można rozpocząć grę");
+                    
+                }
+                for (int i = 0; i < shipsArray.Length; i++)
+                {
+                    if (shipsArray[i] != null)
+                        Console.WriteLine(shipsArray[i] + " indeks: " + i);
+                }
+               
+               
 
 			}
 		}
@@ -76,5 +103,6 @@ public class MultiThreadedEchoServer
 				listener.Stop();
 			}
 		}
-	} // end Main()
+       
+    } // end Main()
 } // end class definition
