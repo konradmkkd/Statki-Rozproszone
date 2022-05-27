@@ -22,6 +22,21 @@ public class MultiThreadedEchoServer
             StreamWriter writer = new StreamWriter(client.GetStream());
             string s = String.Empty;
 
+
+        
+            if (counter == 2)
+            {
+                writer.WriteLine("Kolej klienta 2");
+                writer.Flush();
+                String client_string = reader.ReadLine();
+            }
+            if(counter == 3)
+            {
+                writer.WriteLine("Kolej klienta 1");
+                writer.Flush();
+                String client_string = reader.ReadLine();
+            }
+
             while (!(s = reader.ReadLine()).Equals("Exit") || (s == null))
             {
                

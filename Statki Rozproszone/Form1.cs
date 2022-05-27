@@ -830,7 +830,10 @@ namespace Statki_Rozproszone
                     }
                     writer.WriteLine(s);
                     writer.Flush();
+
+                    //wiadomoœæ od servera
                     String server_string = reader.ReadLine();
+                    txtHelp.Text = server_string;
                     Console.WriteLine(server_string);
                     Console.ReadKey();
                 }
