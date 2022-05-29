@@ -280,167 +280,179 @@ namespace Statki_Rozproszone
                         totalShipis = 10;
                         deactivatedButtons.Clear();
                         neighboursList.Clear();
+
+                        txtPlayer.Text = statkiPlayer1;
+                        txtHelp.Text = "1 Gracz strzela!";
+                        czyWojna = true;
                     }
 
                 }  
             }
+            #region 2 gracz wybiera, ale to drill
+            //if (totalShipis > 0 && !pierwszyWybiera && kolej>=10)    //moment wybierania 2 gracza
+            //{
 
-            if (totalShipis > 0 && !pierwszyWybiera && kolej>=10)    //moment wybierania 2 gracza
-            {
+            //    string tempName = "";
+            //    if (totalShipis > 7)
+            //    {
+            //        button.Enabled = false;
+            //        button.BackColor = Color.Red;
+            //        totalShipis -= 1;
+            //        player2Positions.Add(button);
+            //        tempName = button.Name as string;
+            //        List<Button> tempNeighbours = Neighborhood(button);
+            //        neighboursList.AddRange(tempNeighbours);
 
-                string tempName = "";
-                if (totalShipis > 7)
-                {
-                    button.Enabled = false;
-                    button.BackColor = Color.Red;
-                    totalShipis -= 1;
-                    player2Positions.Add(button);
-                    tempName = button.Name as string;
-                    List<Button> tempNeighbours = Neighborhood(button);
-                    neighboursList.AddRange(tempNeighbours);
+            //        if (totalShipis == 7)
+            //        {
+            //            foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+            //            {
 
-                    if (totalShipis == 7)
-                    {
-                        foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
-                        {
+            //                if (!player2Positions.Contains(btn))
+            //                {
+            //                    btn.Enabled = true;
+            //                    btn.BackColor = Color.White;
+            //                }
+            //            }
 
-                            if (!player2Positions.Contains(btn))
-                            {
-                                btn.Enabled = true;
-                                btn.BackColor = Color.White;
-                            }
-                        }
+            //            foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+            //            {
+            //                if (!player2Positions.Contains(neighbour))
+            //                {
+            //                    deactivatedButtons.Add(neighbour);
+            //                    neighbour.Enabled = false;
+            //                    neighbour.BackColor = Color.LightGray;
+            //                }
 
-                        foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
-                        {
-                            if (!player2Positions.Contains(neighbour))
-                            {
-                                deactivatedButtons.Add(neighbour);
-                                neighbour.Enabled = false;
-                                neighbour.BackColor = Color.LightGray;
-                            }
+            //            }
+            //            neighboursList.Clear();
+            //        }
+            //        else
+            //        {
+            //            foreach (var btn in playerPositionButtons)
+            //            {
 
-                        }
-                        neighboursList.Clear();
-                    }
-                    else
-                    {
-                        foreach (var btn in playerPositionButtons)
-                        {
+            //                if (!player2Positions.Contains(btn))
+            //                {
+            //                    btn.Enabled = false;
+            //                    btn.BackColor = Color.LightGray;
+            //                }
+            //            }
 
-                            if (!player2Positions.Contains(btn))
-                            {
-                                btn.Enabled = false;
-                                btn.BackColor = Color.LightGray;
-                            }
-                        }
+            //            foreach (var neighbour in neighboursList)
+            //            {
+            //                if (!player2Positions.Contains(neighbour))
+            //                {
+            //                    neighbour.Enabled = true;
+            //                    neighbour.BackColor = Color.White;
+            //                }
 
-                        foreach (var neighbour in neighboursList)
-                        {
-                            if (!player2Positions.Contains(neighbour))
-                            {
-                                neighbour.Enabled = true;
-                                neighbour.BackColor = Color.White;
-                            }
+            //            }
+            //        }
 
-                        }
-                    }
+            //        //stwórz s¹siedztwo
+            //        //wyœwietl tylko s¹siedztwo
+            //    }
 
-                    //stwórz s¹siedztwo
-                    //wyœwietl tylko s¹siedztwo
-                }
+            //    if (totalShipis <= 7 && totalShipis > 0 && kolej >= 13)
+            //    {
+            //        button.Enabled = false;
+            //        button.BackColor = Color.Red;
 
-                if (totalShipis <= 7 && totalShipis > 0 && kolej >= 13)
-                {
-                    button.Enabled = false;
-                    button.BackColor = Color.Red;
+            //        player2Positions.Add(button);
+            //        tempName = button.Name as string;
+            //        List<Button> tempNeighbours = Neighborhood(button);
+            //        neighboursList.AddRange(tempNeighbours);
 
-                    player2Positions.Add(button);
-                    tempName = button.Name as string;
-                    List<Button> tempNeighbours = Neighborhood(button);
-                    neighboursList.AddRange(tempNeighbours);
+            //        if (totalShipis == 6 || totalShipis <= 4)
+            //        {
+            //            foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+            //            {
 
-                    if (totalShipis == 6 || totalShipis <= 4)
-                    {
-                        foreach (var btn in playerPositionButtons) // dzia³anie na ka¿dym nie zaznaczonym buttonie.
-                        {
+            //                if (!player2Positions.Contains(btn))
+            //                {
+            //                    btn.Enabled = true;
+            //                    btn.BackColor = Color.White;
+            //                }
+            //            }
 
-                            if (!player2Positions.Contains(btn))
-                            {
-                                btn.Enabled = true;
-                                btn.BackColor = Color.White;
-                            }
-                        }
+            //            foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+            //            {
+            //                if (!player2Positions.Contains(neighbour))
+            //                {
+            //                    deactivatedButtons.Add(neighbour);
+            //                    neighbour.Enabled = false;
+            //                    neighbour.BackColor = Color.LightGray;
+            //                }
 
-                        foreach (var neighbour in neighboursList) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
-                        {
-                            if (!player2Positions.Contains(neighbour))
-                            {
-                                deactivatedButtons.Add(neighbour);
-                                neighbour.Enabled = false;
-                                neighbour.BackColor = Color.LightGray;
-                            }
+            //            }
+            //            neighboursList.Clear();
+            //            foreach (var deactivated in deactivatedButtons)
+            //            {
+            //                deactivated.Enabled = false;
+            //                deactivated.BackColor = Color.LightGray;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            foreach (var btn in playerPositionButtons)
+            //            {
 
-                        }
-                        neighboursList.Clear();
-                        foreach (var deactivated in deactivatedButtons)
-                        {
-                            deactivated.Enabled = false;
-                            deactivated.BackColor = Color.LightGray;
-                        }
-                    }
-                    else
-                    {
-                        foreach (var btn in playerPositionButtons)
-                        {
+            //                if (!player2Positions.Contains(btn))    // dzia³anie na ka¿dym nie zaznaczonym buttonie.
+            //                {
+            //                    btn.Enabled = false;
+            //                    btn.BackColor = Color.LightGray;
+            //                }
+            //            }
 
-                            if (!player2Positions.Contains(btn))    // dzia³anie na ka¿dym nie zaznaczonym buttonie.
-                            {
-                                btn.Enabled = false;
-                                btn.BackColor = Color.LightGray;
-                            }
-                        }
+            //            foreach (var neighbour in neighboursList)
+            //            {
+            //                if (!player2Positions.Contains(neighbour) && !deactivatedButtons.Contains(neighbour)) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
+            //                {
+            //                    neighbour.Enabled = true;
+            //                    neighbour.BackColor = Color.White;
+            //                }
 
-                        foreach (var neighbour in neighboursList)
-                        {
-                            if (!player2Positions.Contains(neighbour) && !deactivatedButtons.Contains(neighbour)) //dzia³anie na ka¿dym s¹siedzie zaznaczonych buttonów.
-                            {
-                                neighbour.Enabled = true;
-                                neighbour.BackColor = Color.White;
-                            }
+            //            }
+            //        }
+            //        totalShipis -= 1;
 
-                        }
-                    }
-                    totalShipis -= 1;
+            //        if (totalShipis == 0)
+            //        {
+            //            string statkiPlayer1 = "";
+            //            foreach (var item in player2Positions)
+            //            {
+            //                statkiPlayer1 = statkiPlayer1 + item.Text;
+            //                item.BackColor = Color.White;
+            //                item.Enabled = true;
+            //            }
+            //            foreach (var item in deactivatedButtons)
+            //            {
+            //                item.Enabled = true;
+            //                item.BackColor = Color.White;
+            //            }
+            //            txtPlayer.Text = statkiPlayer1;
+            //            txtHelp.Text = "1 Gracz strzela!";
+            //            deactivatedButtons.Clear();
+            //            neighboursList.Clear();
+            //            czyWojna = true;
 
-                    if (totalShipis == 0)
-                    {
-                        string statkiPlayer1 = "";
-                        foreach (var item in player2Positions)
-                        {
-                            statkiPlayer1 = statkiPlayer1 + item.Text;
-                            item.BackColor = Color.White;
-                            item.Enabled = true;
-                        }
-                        foreach (var item in deactivatedButtons)
-                        {
-                            item.Enabled = true;
-                            item.BackColor = Color.White;
-                        }
-                        txtPlayer.Text = statkiPlayer1;
-                        txtHelp.Text = "1 Gracz strzela!";
-                        deactivatedButtons.Clear();
-                        neighboursList.Clear();
-                        czyWojna = true;
+            //        }
 
-                    }
+            //    }
+            //}
+            #endregion
 
-                }
-            }
-            
-            //tutaj po wybraniu statku, mo¿na robiæ kolejne klikniêcia, które s¹ rollowane za pomoc¹ zmiennej `kolej`
 
-            if (kolej % 2==0 && czyWojna && kolej>=20)   //ruch 1 gracza
+            // gdy gracz wybiera to powinien zatwierdziæ to buttonem,
+            // a nastêpnie dostaæ odpowiedŸ od serwera -
+            // czy 2 gracz wybra³ ju¿ statki,
+            // jeœli nie - wszystkie buttony s¹ deactivated i napis jest "oczekiwanie na 2 klienta"
+            // jeœli tak - buttony siê aktywuj¹ u gracza który 1 strzela, wybrane buttony zapisuj¹ siê u przeciwnika, aby na cliencie by³y sprawdzane, a by³a tylko przekazywana informacja w co zosta³o strzelone
+            // 
+
+
+            if (/*kolej % 2==0 &&*/ czyWojna /*&& kolej>=20*/)   //ruch 1 gracza
             {
                 btnChangePlayer.Enabled = true;
                 foreach (var item in player2Positions)
