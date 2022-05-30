@@ -799,8 +799,8 @@ namespace Statki_Rozproszone
         {
             if (!connection)
             {
-                RestartGame();
                 connection = true;
+                RestartGame();
             }
 
 
