@@ -797,8 +797,13 @@ namespace Statki_Rozproszone
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            connection = true;
-            RestartGame();
+            if (!connection)
+            {
+                RestartGame();
+                connection = true;
+            }
+
+
             buttonConnect.Enabled = false;
             if (buttonConnect.Text == "ZatwierdŸ wybór")
             {
