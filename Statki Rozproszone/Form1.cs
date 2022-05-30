@@ -39,6 +39,7 @@ namespace Statki_Rozproszone
         int kolej;
         bool pierwszyWybiera;
         bool czyWojna;
+        bool connection = false;
 
 
         private string buttonsToString(List<Button> lista)
@@ -52,6 +53,7 @@ namespace Statki_Rozproszone
             }
             return buttonsNames;
         }
+
 
         private void RestartGame()
         {
@@ -71,7 +73,11 @@ namespace Statki_Rozproszone
             }
             for (int i = 0; i < playerPositionButtons.Count; i++)
             {
+                if (connection)
                 playerPositionButtons[i].Enabled = true;
+                else
+                    playerPositionButtons[i].Enabled = false;
+
                 playerPositionButtons[i].Tag = " ";
 
             }
@@ -253,37 +259,8 @@ namespace Statki_Rozproszone
 
                     if (totalShipis == 0)
                     {
-                        txtHelp.Text = "2 Gracz wybiera miejsca na statki";
-                        string statkiPlayer1 = "";
-                        foreach (var item in player1Positions)
-                        {
-                            statkiPlayer1 = statkiPlayer1 + item.Text;
-                            item.BackColor = Color.White;
-                            item.Enabled = true;
-                        }
-                        foreach (var item in deactivatedButtons) //lub neighbourButtons
-                        {
-                            statkiPlayer1 = statkiPlayer1 + item.Text;
-                            item.BackColor = Color.White;
-                            item.Enabled = true;
-                        }
-                        foreach (var item in neighboursList) //lub neighbourButtons
-                        {
-                            statkiPlayer1 = statkiPlayer1 + item.Text;
-                            item.BackColor = Color.White;
-                            item.Enabled = true;
-                        }
-                        txtPlayer.Text = statkiPlayer1;
-
-                       
-                        pierwszyWybiera = false;
-                        totalShipis = 10;
-                        deactivatedButtons.Clear();
-                        neighboursList.Clear();
-
-                        txtPlayer.Text = statkiPlayer1;
-                        txtHelp.Text = "1 Gracz strzela!";
-                        czyWojna = true;
+                        
+                        buttonConnect.Enabled = true;
                     }
 
                 }  
@@ -450,9 +427,14 @@ namespace Statki_Rozproszone
             // jeœli nie - wszystkie buttony s¹ deactivated i napis jest "oczekiwanie na 2 klienta"
             // jeœli tak - buttony siê aktywuj¹ u gracza który 1 strzela, wybrane buttony zapisuj¹ siê u przeciwnika, aby na cliencie by³y sprawdzane, a by³a tylko przekazywana informacja w co zosta³o strzelone
             // 
+            // Gdy jeden z graczy atakuje label zmienia siê na "x gracz atakuje" [mo¿na dodaæ opcjonalnie label u do³u, który bêdzie wyœwietla³ napis 'twoja/wroga plansza'
+            // Po ataku tak samo jak na 1 kliencie, na 2 kliencie wyœwietla siê efekt jego ruchu fioletowy/zielony,
+            // mo¿e go ogl¹daæ a¿ do momentu klikniêcia przycisku "nastêpna runda"przez zaatakowanego.
+            //
+            //
 
 
-            if (/*kolej % 2==0 &&*/ czyWojna /*&& kolej>=20*/)   //ruch 1 gracza
+            if (kolej % 2 == 0 && czyWojna /*&& kolej>=20*/)   //ruch 1 gracza
             {
                 btnChangePlayer.Enabled = true;
                 foreach (var item in player2Positions)
@@ -507,7 +489,7 @@ namespace Statki_Rozproszone
 
             }
 
-            if (kolej % 2 != 0 && czyWojna && kolej>20)
+            if (kolej % 2 != 0 && czyWojna /*&& kolej>20*/)
             {
                
                 player2Hits.Add(button);
@@ -568,7 +550,7 @@ namespace Statki_Rozproszone
         {
             ClearTheBoard();
 
-            if (kolej % 2 == 1)
+            if (kolej % 2 == 1)     //kolej %2 musi zamieniæ siê na inny warunek zwi¹zany z serwerem
             {
                 foreach (var item in toShow)
                 {
@@ -815,6 +797,47 @@ namespace Statki_Rozproszone
 
         private void button2_Click_1(object sender, EventArgs e)
         {
+            connection = true;
+            RestartGame();
+            buttonConnect.Enabled = false;
+            if (buttonConnect.Text == "ZatwierdŸ wybór")
+            {
+                txtHelp.Text = "2 Gracz wybiera miejsca na statki";
+                string statkiPlayer1 = "";
+                foreach (var item in player1Positions)
+                {
+                    statkiPlayer1 = statkiPlayer1 + item.Text;
+                    item.BackColor = Color.White;
+                    item.Enabled = true;
+                }
+                foreach (var item in deactivatedButtons) //lub neighbourButtons
+                {
+                    statkiPlayer1 = statkiPlayer1 + item.Text;
+                    item.BackColor = Color.White;
+                    item.Enabled = true;
+                }
+                foreach (var item in neighboursList) //lub neighbourButtons
+                {
+                    statkiPlayer1 = statkiPlayer1 + item.Text;
+                    item.BackColor = Color.White;
+                    item.Enabled = true;
+                }
+                txtPlayer.Text = statkiPlayer1;
+
+
+                pierwszyWybiera = false;
+                totalShipis = 10;
+                deactivatedButtons.Clear();
+                neighboursList.Clear();
+
+                txtPlayer.Text = statkiPlayer1;
+                txtHelp.Text = "1 Gracz strzela!";
+                czyWojna = true;
+            }
+
+            buttonConnect.Text = "ZatwierdŸ wybór";
+
+
             try
             {
                 TcpClient client = new TcpClient("127.0.0.1", 8080);
