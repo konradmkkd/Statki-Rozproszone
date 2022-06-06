@@ -64,7 +64,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnChangePlayer = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.buttonConnect = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // A1
@@ -558,16 +558,15 @@
             this.textBox3.TabIndex = 38;
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
-            // buttonConnect
+            // button2
             // 
-            this.buttonConnect.ForeColor = System.Drawing.Color.Crimson;
-            this.buttonConnect.Location = new System.Drawing.Point(864, 534);
-            this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(89, 117);
-            this.buttonConnect.TabIndex = 39;
-            this.buttonConnect.Text = "Połącz się";
-            this.buttonConnect.UseVisualStyleBackColor = true;
-            this.buttonConnect.Click += new System.EventHandler(this.button2_Click_1);
+            this.button2.Location = new System.Drawing.Point(864, 534);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(89, 117);
+            this.button2.TabIndex = 39;
+            this.button2.Text = "rozpocznij grę";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // Statki
             // 
@@ -576,7 +575,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(982, 953);
-            this.Controls.Add(this.buttonConnect);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.btnChangePlayer);
             this.Controls.Add(this.button1);
@@ -656,6 +655,6 @@
         private Button button1;
         private Button btnChangePlayer;
         private TextBox textBox3;
-        private Button buttonConnect;
+        private Button button2;
     }
 }
